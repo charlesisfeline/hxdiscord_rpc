@@ -53,17 +53,21 @@ extern class Discord
 	static function Initialize(applicationId:cpp.ConstCharStar, handlers:cpp.RawPointer<DiscordEventHandlers>, autoRegister:Int,
 		optionalSteamId:cpp.ConstCharStar):Void;
 
+	public static inline function initialize(clientId:String, handlers:DiscordEventHandlers, autoRegister:Bool = true, ?steamID:String):Void {
+		Discord.Initialize(clientId, cpp.RawPointer.addressOf(handlers), autoRegister ? 1 : 0, steamID);
+	}
+
 	/**
 	 * Shuts down the Discord RPC.
 	 */
 	@:native('Discord_Shutdown')
-	static function Shutdown():Void;
+	public static function shutdown():Void;
 
 	/**
 	 * Checks for incoming messages and dispatches callbacks.
 	 */
 	@:native('Discord_RunCallbacks')
-	static function RunCallbacks():Void;
+	public static function runCallbacks():Void;
 
 	#if DISCORD_DISABLE_IO_THREAD
 	/**
@@ -71,7 +75,7 @@ extern class Discord
 	 * Note: This should be called if the library is configured not to start its own IO thread.
 	 */
 	@:native('Discord_UpdateConnection')
-	static function UpdateConnection():Void;
+	public static function updateConnection():Void;
 	#end
 
 	/**
@@ -82,11 +86,15 @@ extern class Discord
 	@:native('Discord_UpdatePresence')
 	static function UpdatePresence(presence:cpp.RawConstPointer<DiscordRichPresence>):Void;
 
+	public static inline function updatePresence(presence:DiscordRichPresence):Void {
+		Discord.UpdatePresence(cpp.RawConstPointer.addressOf(presence));
+	}
+
 	/**
 	 * Clears the current presence.
 	 */
 	@:native('Discord_ClearPresence')
-	static function ClearPresence():Void;
+	public static function clearPresence():Void;
 
 	/**
 	 * Responds to a user's request.
@@ -104,4 +112,8 @@ extern class Discord
 	 */
 	@:native('Discord_UpdateHandlers')
 	static function UpdateHandlers(handlers:cpp.RawPointer<DiscordEventHandlers>):Void;
+
+	public static inline function updateHandlers(handlers:DiscordEventHandlers) {
+		Discord.UpdateHandlers(cpp.RawPointer.addressOf(handlers));
+	}
 }
