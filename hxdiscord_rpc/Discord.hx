@@ -87,7 +87,8 @@ extern class Discord
 	static function UpdatePresence(presence:cpp.RawConstPointer<DiscordRichPresence>):Void;
 
 	public static inline function updatePresence(presence:DiscordRichPresence):Void {
-		Discord.UpdatePresence(cpp.RawConstPointer.addressOf(presence));
+		var persistentPresence = presence;
+		Discord.UpdatePresence(cpp.RawConstPointer.addressOf(persistentPresence));
 	}
 
 	/**
